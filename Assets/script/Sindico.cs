@@ -173,6 +173,13 @@ public class Sindico : MonoBehaviour {
 		
 		//RoomOptions ro = new RoomOptions () { IsVisible = true, MaxPlayers = 4 };
 		Debug.Log (nomeSala.text.ToString().Equals(""));
+		RoomOptions ro = new RoomOptions () { IsVisible = true, MaxPlayers = 4 };
+		if (nomeSala.text.ToString ().Equals ("")) {
+			PhotonNetwork.CreateRoom ("Sala"+PhotonNetwork.countOfRooms + 1,ro,TypedLobby.Default);
+		}else{
+			PhotonNetwork.CreateRoom (nomeSala.text,ro,TypedLobby.Default);
+			//PhotonNetwork.JoinLobby();
+		}
 		canvasLooby.SetActive (false);
 		canvasModel.SetActive (true);
 		//if (nomeSala.text.ToString ().Equals ("")) {
@@ -214,13 +221,16 @@ public class Sindico : MonoBehaviour {
 	}
 
 	public void confirmaModel(){
-		RoomOptions ro = new RoomOptions () { IsVisible = true, MaxPlayers = 4 };
-		if (nomeSala.text.ToString ().Equals ("")) {
-			PhotonNetwork.CreateRoom ("Sala"+PhotonNetwork.countOfRooms + 1,ro,TypedLobby.Default);
-		}else{
-			PhotonNetwork.CreateRoom (nomeSala.text,ro,TypedLobby.Default);
-			//PhotonNetwork.JoinLobby();
-		}
+//		RoomOptions ro = new RoomOptions () { IsVisible = true, MaxPlayers = 4 };
+//		if (nomeSala.text.ToString ().Equals ("")) {
+//			PhotonNetwork.CreateRoom ("Sala"+PhotonNetwork.countOfRooms + 1,ro,TypedLobby.Default);
+//		}else{
+//			PhotonNetwork.CreateRoom (nomeSala.text,ro,TypedLobby.Default);
+//			//PhotonNetwork.JoinLobby();
+//		}
+		canvasHUD.SetActive(true);
+		canvasModel.SetActive (false);
+		PhotonNetwork.Instantiate (model,spawn.position, Quaternion.identity,0);
 	}
 
 	public void botaoExit(){
@@ -238,12 +248,13 @@ public class Sindico : MonoBehaviour {
 		Debug.Log ("Não foi possível criar a sala.");
 	}
 	void OnJoinedRoom(){
-		//canvasLooby.SetActive (false);
-		canvasModel.SetActive(false);
-		canvasHUD.SetActive (true);
+		canvasLooby.SetActive (false);
+		canvasModel.SetActive(true);
+		//canvasModel.SetActive(false);
+		//canvasHUD.SetActive (true);
 		//PhotonNetwork.Instantiate ("robo",spawn.position, Quaternion.identity,0);
 		//PhotonNetwork.Instantiate ("kile",spawn.position, Quaternion.identity,0);
-		PhotonNetwork.Instantiate (model,spawn.position, Quaternion.identity,0);
+		//PhotonNetwork.Instantiate (model,spawn.position, Quaternion.identity,0);
 		Debug.Log ("Entrou na sala com sucesso."); 
 	}
 
