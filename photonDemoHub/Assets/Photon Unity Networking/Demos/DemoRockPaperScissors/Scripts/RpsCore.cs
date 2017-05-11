@@ -149,7 +149,6 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
 
 		if (PhotonNetwork.room.PlayerCount>1)
 		{
-
 			if (this.turnManager.IsOver)
 			{
 				return;
@@ -414,7 +413,6 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
         {
             // should be this format: "name        00"
             this.RemotePlayerText.text = remote.NickName + "        " + remote.GetScore().ToString("D2");
-
         }
         else
         {
@@ -538,7 +536,5 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
     {
         this.DisconnectedPanel.gameObject.SetActive(true);
     }
-
-
 
 }
