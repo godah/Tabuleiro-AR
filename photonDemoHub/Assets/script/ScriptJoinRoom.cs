@@ -18,9 +18,41 @@ public class ScriptJoinRoom : MonoBehaviour {
 	}
 
 	public void entrarNaSala(){
-		Debug.Log ("joinRoom");
-		//Debug.Log (nomeSala.text);
-		PhotonNetwork.JoinRoom ("aa"); 
+		Debug.Log ("joinRoomOrCreate");
+		//Debug.Log (btnNomeSala.text);
+		//PhotonNetwork.JoinRoom ("aa"); 
 
+		RoomOptions ro = new RoomOptions () { IsVisible = true, MaxPlayers = 4 };
+		string sala = btnNomeSala.gameObject.GetComponentInChildren<Text> ().text;
+		if (sala == null) {
+			sala = "Sala " + PhotonNetwork.countOfRooms + 1;
+		}
+		PhotonNetwork.JoinOrCreateRoom (sala, ro, TypedLobby.Default);
+
+	}
+	public void joinSala1(){
+		Debug.Log ("join Sala01");
+		RoomOptions ro = new RoomOptions () { IsVisible = true, MaxPlayers = 4 };
+		PhotonNetwork.JoinOrCreateRoom ("sala1", ro, TypedLobby.Default);
+	}
+	public void joinSala2(){
+		Debug.Log ("join Sala02");
+		RoomOptions ro = new RoomOptions () { IsVisible = true, MaxPlayers = 4 };
+		PhotonNetwork.JoinOrCreateRoom ("sala2", ro, TypedLobby.Default);
+	}
+	public void joinSala3(){
+		Debug.Log ("join Sala03");
+		RoomOptions ro = new RoomOptions () { IsVisible = true, MaxPlayers = 4 };
+		PhotonNetwork.JoinOrCreateRoom ("sala3", ro, TypedLobby.Default);
+	}
+	public void joinSala4(){
+		Debug.Log ("join Sala04");
+		RoomOptions ro = new RoomOptions () { IsVisible = true, MaxPlayers = 4 };
+		PhotonNetwork.JoinOrCreateRoom ("sala4", ro, TypedLobby.Default);
+	}
+	public void joinSala5(){
+		Debug.Log ("join Sala05");
+		RoomOptions ro = new RoomOptions () { IsVisible = true, MaxPlayers = 4 };
+		PhotonNetwork.JoinOrCreateRoom ("sala5", ro, TypedLobby.Default);
 	}
 }

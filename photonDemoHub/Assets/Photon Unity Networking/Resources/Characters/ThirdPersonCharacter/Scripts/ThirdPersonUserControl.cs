@@ -1,12 +1,11 @@
 using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
-using System.Collections;
 
 namespace UnityStandardAssets.Characters.ThirdPerson
 {
     [RequireComponent(typeof (ThirdPersonCharacter))]
-    public class ThirdPersonUserControl : Photon.MonoBehaviour
+	public class ThirdPersonUserControl : Photon.MonoBehaviour
     {
         private ThirdPersonCharacter m_Character; // A reference to the ThirdPersonCharacter on the object
         private Transform m_Cam;                  // A reference to the main camera in the scenes transform
@@ -61,11 +60,11 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 					// we use world-relative directions in the case of no main camera
 					m_Move = v * Vector3.forward + h * Vector3.right;
 				}
-				#if !MOBILE_INPUT
+#if !MOBILE_INPUT
 				// walk speed multiplier
 				if (Input.GetKey (KeyCode.LeftShift))
 					m_Move *= 0.5f;
-				#endif
+#endif
 
 				// pass all parameters to the character control script
 				m_Character.Move (m_Move, crouch, m_Jump);

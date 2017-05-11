@@ -33,6 +33,27 @@ public class PhotonPlayer : IComparable<PhotonPlayer>, IComparable<int>, IEquata
         get { return this.actorID; }
     }
 
+	/// <summary>Descreve não Jogou Turno Atual</summary>
+	public bool isTurn { get; set; }
+
+	/// <summary>Define masterPlayer</summary>
+	public bool masterPlayer { get; set; }
+
+	/// <summary>Descreve se Esta em jogo</summary>
+	public bool start { get; set; }
+
+	/// <summary>Mostra/Define Quantidade de estrelas</summary>
+	public int estrelas { get; set; }
+
+	/// <summary>Mostra/Define Casa atual</summary>
+	public int casa { get; set; }
+
+	/// <summary>Define se esta Pronto para Iniciar</summary>
+	public bool Ready { get; set; }
+
+	/// <summary>Define model name</summary>
+	public string model { get; set; }
+
     /// <summary>Identifier of this player in current room.</summary>
     private int actorID = -1;
 
