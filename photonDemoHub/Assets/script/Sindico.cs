@@ -5,27 +5,21 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Sindico : MonoBehaviour{ 
-	//public static PhotonView photonViewRpc;
-	//cria lista playerGroup
-	//public List<TurnClass> playersGroup;
-	//TurnClass player;
 	//texto dos botoes para alteração
 	public Text textoStatus;
 	public Text btnConnectar;
 	public Text txtProcurando;
 	public Text nomeSala;
 	public Text nomePlayer;
-	//objeto ctnsalas para ativar e desativar
 	public GameObject ctnLista;
 	public GameObject ctnSalas;
-	//objeto botoes para ativar e desativar
 	public Button btnConectar;
 	public Button btnCriar;
 	public Scrollbar scroolDeSalas;
 	private RectTransform rt;
 	public GameObject prefabSalas;
-	public GameObject prefabPlayer;
 	public GameObject canvasLooby;
+	public GameObject canvasConectando;
 	public GameObject canvasModel;
 	public GameObject canvasHUD;
 	public GameObject canvasJogadaDaVez;
@@ -40,7 +34,7 @@ public class Sindico : MonoBehaviour{
 	public GameObject canvasReady;
 	int numeroAtualDeSalas;
 	int numeroAnteriorDeSalas;
-	string model ="kile";
+	string model ="knight";
 	string nick = " ";
 	public Text message;
 
@@ -72,36 +66,16 @@ public class Sindico : MonoBehaviour{
 		}
 
 
-		//informações
-		for (int i = 0; i < PhotonNetwork.playerList.Length; i++) {
-			//Debug.Log ("allready "+PhotonNetwork.playerList [i].start);
-			//Debug.Log ("nick "+PhotonNetwork.playerList [i].NickName);
-			//Debug.Log ("id "+PhotonNetwork.playerList [i].ID);
-			//Debug.Log ("Ready"+PhotonNetwork.playerList [i].Ready);
-			if (PhotonNetwork.playerList [i].isTurn) {
-				Debug.Log ("isTurn " + PhotonNetwork.playerList [i].NickName);
-			}
-		}
-
-		//checa se todos estao prontos
-
-
-
 
 		if (PhotonNetwork.playerList.Length > 0 && PhotonNetwork.player.start ) {
 			canvasReady.SetActive (false);
 			btnReady.SetActive (false);
 			btnUnready.SetActive (false);
 
-
-			//Debug.Log ("ListaExiste and AllReady");
-			//Debug.Log ("Meu nick "+nick);
 			for (int i = 0; i < PhotonNetwork.playerList.Length ; i++) {
-				Debug.Log(PhotonNetwork.playerList [i].NickName.Equals (nick) +" "+ PhotonNetwork.playerList[i].isTurn);
 				if (PhotonNetwork.playerList [i].NickName.Equals (nick)) {
 					message.text = "Start "+PhotonNetwork.playerList[i].start.ToString();
 					if (PhotonNetwork.playerList [i].isTurn) {
-						Debug.Log ("Minha Vez - "+nick);
 						canvasJogadaDaVez.SetActive (true);
 					} else {
 						canvasJogadaDaVez.SetActive (false);
@@ -120,9 +94,7 @@ public class Sindico : MonoBehaviour{
 
 		numeroAtualDeSalas = PhotonNetwork.countOfRooms;
 
-		//Debug.Log ("numero atual"+numeroAtualDeSalas + " numero ant " + numeroAnteriorDeSalas);
 		if (numeroAtualDeSalas != numeroAnteriorDeSalas) {
-			//Debug.Log ("entrou if");
 			for (int i = 0; i < rt.childCount; i++) {
 				GameObject.Destroy(rt.GetChild(0).gameObject);
 			}
@@ -133,14 +105,13 @@ public class Sindico : MonoBehaviour{
 			if (PhotonNetwork.insideLobby) {
 				inserirSala (numeroAtualDeSalas); 
 				numeroAnteriorDeSalas = PhotonNetwork.countOfRooms;
-
 			}
-
 		}
 	}
 
 	void OnConnectedToPhoton(){
 		//Ativar Conteiner desativado
+		canvasConectando.SetActive(false);
 		canvasLooby.SetActive(true);
 		ctnSalas.SetActive (true);
 		ctnLista.SetActive (true);
@@ -157,7 +128,8 @@ public class Sindico : MonoBehaviour{
 		//Ao desconectar desativa o container de salas
 		ctnSalas.SetActive (false);	
 		ctnLista.SetActive (false);
-		canvasLooby.SetActive (true);
+		canvasLooby.SetActive (false);
+		canvasConectando.SetActive(true);
 
 		//desativa botao Criar
 		btnCriar.gameObject.SetActive(false);
@@ -182,14 +154,13 @@ public class Sindico : MonoBehaviour{
 
 	void inserirSala(int nSalass){
 		//chama função para ajustar container
-		//Debug.Log("inserirSala");
 		txtProcurando.gameObject.SetActive (false);
 		adaptarContainer (nSalass);
 		Text t;
 
 		RoomInfo[] sala = PhotonNetwork.GetRoomList();
 		for (int i = 0; i < nSalass ; i++) {
-			//isntancia prefab de sala
+			//instancia prefab de sala
 			RectTransform T = ((GameObject)Instantiate (prefabSalas, Vector3.zero, Quaternion.identity)).GetComponent<RectTransform> ();
 			//seta prefab de sala parent da lista
 
@@ -238,28 +209,28 @@ public class Sindico : MonoBehaviour{
 		ModelMask2.SetActive (false);
 		ModelMask3.SetActive (false);
 		ModelMask4.SetActive (false);
-		model = "kile";
+		model = "knight";
 	}
 	public void botaoModel2(){
 		ModelMask1.SetActive (false);
 		ModelMask2.SetActive (true);
 		ModelMask3.SetActive (false);
 		ModelMask4.SetActive (false);
-		model = "robo";
+		model = "mago";
 	}
 	public void botaoModel3(){
 		ModelMask1.SetActive (false);
 		ModelMask2.SetActive (false);
 		ModelMask3.SetActive (true);
 		ModelMask4.SetActive (false);
-		model = "kile";
+		model = "anao";
 	}
 	public void botaoModel4(){
 		ModelMask1.SetActive (false);
 		ModelMask2.SetActive (false);
 		ModelMask3.SetActive (false);
 		ModelMask4.SetActive (true);
-		model = "robo";
+		model = "amazona";
 	}
 
 	public void confirmaModel(){
@@ -286,6 +257,8 @@ public class Sindico : MonoBehaviour{
 		PhotonNetwork.player.start = false;
 		PhotonNetwork.player.Ready = false;
 		PhotonNetwork.player.model = model + "(Clone)";
+		PhotonNetwork.player.ande = false;
+		PhotonNetwork.player.andeEvento = false;
 
 	}
 
@@ -313,7 +286,6 @@ public class Sindico : MonoBehaviour{
 
 
 	public void botaoReady(){
-		//Debug.Log ("Botao ready");
 		btnUnready.SetActive (true);
 		btnReady.SetActive (false);
 
@@ -324,7 +296,6 @@ public class Sindico : MonoBehaviour{
 
 	public void botaoUnready(){
 		
-		//Debug.Log ("Botao unready");
 		btnUnready.SetActive (false);
 		btnReady.SetActive (true);
 
@@ -334,38 +305,31 @@ public class Sindico : MonoBehaviour{
 
 
 	public void botaoFinishTurn(){
-		//Debug.Log ("botaoFinishTurn()");
 		canvasJogadaDaVez.SetActive (false);
 	}
 
 	void OnCreatedRoom(){
-		//Debug.Log ("A sala foi criada com sucesso.");
 
 	}
 
 	void OnPhotonCreateRoomFailed(){
-		//Debug.Log ("Não foi possível criar a sala.");
+		
 	}
+
 	void OnJoinedRoom(){
 		canvasLooby.SetActive (false);
 		canvasModel.SetActive(true);
 
-		//Debug.Log ("Entrou na sala com sucesso."); 
 	}
 
 	void OnLeftRoom(){
 		canvasLooby.SetActive (true);
 		canvasHUD.SetActive (false);
 
-		//Debug.Log ("Saiu da sala.");
 	}
 
 	void OnPhotonPlayerConnected(){
-		//Debug.Log ("OnPhotonPlayerConnected");
-
-
 
 	}
-
 
 }

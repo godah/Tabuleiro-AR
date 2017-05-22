@@ -36,6 +36,12 @@ public class PhotonPlayer : IComparable<PhotonPlayer>, IComparable<int>, IEquata
 	/// <summary>Descreve não Jogou Turno Atual</summary>
 	public bool isTurn { get; set; }
 
+	/// <summary>Descreve se é a vez de andar</summary>
+	public bool ande { get; set; }
+
+	/// <summary>Descreve se é a vez de andarEvento</summary>
+	public bool andeEvento { get; set; }
+
 	/// <summary>Define masterPlayer</summary>
 	public bool masterPlayer { get; set; }
 
