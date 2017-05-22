@@ -8,14 +8,16 @@ public class GerenteEventos : MonoBehaviour {
 	void Start () {
 		carregaEventos ();
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		
 	}
 
 	void carregaEventos(){
-		eventosCasas [0] = 0;
+		//Neste vetor abaixo coloque o que cada casa irá fazer
+		//exemplo evento[x] = 2; para andar + duas casas
+		//exemplo evento[x] = -3; para voltar tres casas
+		eventosCasas [0] = 0;//inicio deixar zerado
 		eventosCasas [1] = 3;
 		eventosCasas [2] = 5;
 		eventosCasas [3] = -1;
@@ -25,7 +27,7 @@ public class GerenteEventos : MonoBehaviour {
 		eventosCasas [7] = 6;
 		eventosCasas [8] = 3;
 		eventosCasas [9] = 2;
-		eventosCasas [10] = -5;
+		eventosCasas [10] = 0;//boss
 		eventosCasas [11] = 0;
 		eventosCasas [12] = 0;
 		eventosCasas [13] = -1;
@@ -35,7 +37,7 @@ public class GerenteEventos : MonoBehaviour {
 		eventosCasas [17] = 2;
 		eventosCasas [18] = -4;
 		eventosCasas [19] = 2;
-		eventosCasas [20] = 2;
+		eventosCasas [20] = 0;//boss
 		eventosCasas [21] = 1;
 		eventosCasas [22] = 1;
 		eventosCasas [23] = -1;
@@ -45,7 +47,7 @@ public class GerenteEventos : MonoBehaviour {
 		eventosCasas [27] = -4;
 		eventosCasas [28] = -6;
 		eventosCasas [29] = 2;
-		eventosCasas [30] = -25;
+		eventosCasas [30] = 0;//boss final
 
 	}
 }
