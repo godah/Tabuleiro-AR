@@ -1,12 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TurnosGerenciador : Photon.MonoBehaviour {
 	public static PhotonView photonViewRpc;
 	public GameObject btnReady;
 	public GameObject btnUnready;
 	public bool allReadys;
+	public Text txtlado;
+	public GameObject DadoStatus;
+	public GameObject canvasTexto;
+	public Text textoLabel;
 
 
 	void Start () {
@@ -14,10 +19,8 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 		
 	}
 	
-	// Update is called once per frame
-
 	void Update () {
-		//Debug.Log ("allready "+allReady);
+		
 
 	}
 
@@ -26,16 +29,12 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 	//checa se todos estao prontos
 	[PunRPC]
 	public void checkAllReady(){
-		//Debug.Log ("checkallReady()");
 		allReadys = false;
-		//Debug.Log ("entrada "+ allReady);
 		if (PhotonNetwork.playerList.Length > 1) {
 			allReadys = true;
-			//Debug.Log ("if "+ allReady);
 			for (int i = 0; i < PhotonNetwork.playerList.Length; i++) {
 				if (!PhotonNetwork.playerList [i].Ready) {
 					allReadys = false;
-					//Debug.Log ("achou false "+ allReadys); 
 				}
 			}
 		}
@@ -46,17 +45,11 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 		} else {
 			this.photonView.RPC ("allReady",PhotonTargets.All,false);
 		}
-		//Debug.Log ("fim "+ allReady);
 	}
 
 
 	[PunRPC]
 	public void resetTurns(){
-		Debug.Log ("resetTurns()");
-//		PhotonNetwork.playerList [0].isTurn = true;
-//		for (int i = 1; i < PhotonNetwork.playerList.Length; i++) {
-//			PhotonNetwork.playerList [i].isTurn = false;
-//		}
 		//passa o turno para o masterplayer
 		for(int i = 0; i < PhotonNetwork.playerList.Length ; i++){
 			if (PhotonNetwork.playerList [i].masterPlayer) {
@@ -78,7 +71,7 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 
 	[PunRPC]
 	public void passarVez(string nick){
-		//Debug.Log ("passar a vez");
+		Debug.Log ("passarVez");
 		for (int i = 0; i < PhotonNetwork.playerList.Length ; i++) {
 			if (PhotonNetwork.playerList [i].NickName == nick) {
 				//se for o ultimo da lista
@@ -97,7 +90,6 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 
 	[PunRPC]
 	public void isReady(string nick){
-		//Debug.Log (" ID isReady " + nick);
 		for(int i = 0; i < PhotonNetwork.playerList.Length ; i++){
 			if (PhotonNetwork.playerList [i].NickName == nick) {
 				PhotonNetwork.playerList [i].Ready = true;
@@ -109,13 +101,69 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 
 	[PunRPC]
 	public void isUnready(string nick){
-		//Debug.Log (" ID isUnready " + nick);
 		allReadys = false;
 		for(int i = 0; i < PhotonNetwork.playerList.Length; i++){
 			if (PhotonNetwork.playerList [i].NickName == nick) {
 				PhotonNetwork.playerList [i].Ready = false;
 			}
 		}
+	}
+
+//	[PunRPC]
+//	public void mostrarValorDado(int lado,string nick){
+//		DadoStatus.SetActive (true);
+//		txtlado.text = lado.ToString();	
+//		this.photonView.RPC ("andar",PhotonTargets.All,lado,nick);
+//	}
+
+	[PunRPC]
+	public void removerDado(){
+		Debug.Log ("removerDado");
+		GameObject dado = GameObject.Find ("d6(Clone)");
+		Destroy (dado);
+		DadoStatus.SetActive (false);
+		txtlado.text = ("").ToString ();
+		
+	}
+
+	[PunRPC]
+	public void andar(int lado, string nick){
+		Debug.Log ("andar");
+		DadoStatus.SetActive (true);
+		txtlado.text = lado.ToString();	
+		for(int i = 0; i < PhotonNetwork.playerList.Length; i++){
+			if (PhotonNetwork.playerList [i].NickName == nick) {
+				if (PhotonNetwork.playerList [i].casa + lado > 30) {
+					PhotonNetwork.playerList [i].casa = 30;
+				} else {
+					PhotonNetwork.playerList [i].casa = PhotonNetwork.playerList [i].casa + lado;
+				}
+				PhotonNetwork.playerList [i].ande = true;
+			}
+		}
+	}
+
+	[PunRPC]
+	public void andarEvento(int lado, string nick){
+		Debug.Log ("andarEvento");
+		for(int i = 0; i < PhotonNetwork.playerList.Length; i++){
+			if (PhotonNetwork.playerList [i].NickName == nick) {
+				if (PhotonNetwork.playerList [i].casa + lado > 30) {
+					PhotonNetwork.playerList [i].casa = 30;
+				} else {
+					PhotonNetwork.playerList [i].casa = PhotonNetwork.playerList [i].casa + lado;
+				}
+				PhotonNetwork.playerList [i].andeEvento = true;
+			}
+		}
+	}
+
+
+
+	[PunRPC]
+	public void mostrarTexto(string texto){
+		canvasTexto.SetActive (true);
+		textoLabel.text = texto.ToString ();
 	}
 
 
