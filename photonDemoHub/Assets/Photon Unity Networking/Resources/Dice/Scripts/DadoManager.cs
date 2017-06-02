@@ -31,20 +31,69 @@ public class DadoManager : MonoBehaviour {
 	public void jogarDado(){
 		Dice.Roll("d6", "d6-red-dots", diceSpawn.transform.position, Force());
 		btnJogar.SetActive (false);
+		PhotonNetwork.player.emjogo = true;
 		StartCoroutine (waitRolling (4));
 
 	}
 
+	/// <summary>
+	/// Função do botão OK do texto após jogada
+	/// </summary>
 	public void btnOK(){
 		canvasTexto.SetActive (false);
 		textoLabel.text = ("").ToString();
-		//evento
-		Dice.Clear ();
-		TurnosGerenciador.photonViewRpc.RPC ("removerDado",PhotonTargets.All);
+		//verifica se é a vez ou se apenas deve fechar o texto.
+		if (PhotonNetwork.player.isTurn && PhotonNetwork.player.emjogo) {
+			//evento
+			Dice.Clear ();
+			TurnosGerenciador.photonViewRpc.RPC ("removerDado", PhotonTargets.All);
 
-		TurnosGerenciador.photonViewRpc.RPC ("andarEvento",PhotonTargets.All,GerenteEventos.eventosCasas[PhotonNetwork.player.casa],PhotonNetwork.player.NickName);
+			//PhotonNetwork.player.casa += GerenteEventos.eventosCasas [PhotonNetwork.player.casa];
 
-		TurnosGerenciador.photonViewRpc.RPC ("passarVez", PhotonTargets.All, PhotonNetwork.player.NickName);
+			//se for passar ou cair encima do boss 10 SPIDER 
+			if ((PhotonNetwork.player.casa < 10 && PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa] > 10) ||
+				(PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa] == 10)) {
+
+				PhotonNetwork.player.sequenciaBoss = PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa];
+				TurnosGerenciador.photonViewRpc.RPC ("andarBoss",PhotonTargets.All,10,PhotonNetwork.player.NickName);
+
+			}
+
+
+			//se for passar ou cair encima do boss 20 TIGER
+			if ((PhotonNetwork.player.casa < 20 && PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa] > 20) ||
+				(PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa] == 20)) {
+
+				PhotonNetwork.player.sequenciaBoss = PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa];
+				TurnosGerenciador.photonViewRpc.RPC ("andarBoss",PhotonTargets.All,20,PhotonNetwork.player.NickName);
+			}
+
+
+			//se for passar ou cair encima do boss 30 GORILLA
+			if ((PhotonNetwork.player.casa < 30 && PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa] > 30) ||
+				(PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa] == 30)) {
+
+				PhotonNetwork.player.sequenciaBoss = PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa];
+				TurnosGerenciador.photonViewRpc.RPC ("andarBoss",PhotonTargets.All,30,PhotonNetwork.player.NickName);
+			}
+
+
+			//se nao passar pelo boss nem parar no boss ande normal
+			if (!(PhotonNetwork.player.casa < 10 && PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa] > 10)&&
+				!(PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa] == 10) &&
+				!(PhotonNetwork.player.casa < 20 && PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa] > 20) &&
+				!(PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa] == 20) &&
+				!(PhotonNetwork.player.casa < 30 && PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa] > 30) &&
+				!(PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa] == 30)) {
+
+				//TurnosGerenciador.photonViewRpc.RPC ("andar",PhotonTargets.All,Dice.Value("")+PhotonNetwork.player.casa,PhotonNetwork.player.NickName);
+				TurnosGerenciador.photonViewRpc.RPC ("andarEvento", PhotonTargets.All, PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa], PhotonNetwork.player.NickName);
+			}
+
+			//TurnosGerenciador.photonViewRpc.RPC ("andarEvento", PhotonTargets.All, PhotonNetwork.player.casa, PhotonNetwork.player.NickName);
+
+			TurnosGerenciador.photonViewRpc.RPC ("passarVez", PhotonTargets.All, PhotonNetwork.player.NickName);
+		}
 	}
 
 
@@ -63,8 +112,47 @@ public class DadoManager : MonoBehaviour {
 	IEnumerator waitRolling(float time){
 		yield return new WaitForSeconds (time);
 
-		//TurnosGerenciador.photonViewRpc.RPC ("mostrarValorDado",PhotonTargets.All,Dice.Value(""),PhotonNetwork.player.NickName);
-		TurnosGerenciador.photonViewRpc.RPC ("andar",PhotonTargets.All,Dice.Value(""),PhotonNetwork.player.NickName);
+		//se for passar ou cair encima do boss 10 SPIDER 
+		if ((PhotonNetwork.player.casa < 10 && PhotonNetwork.player.casa + Dice.Value ("") > 10) ||
+			(PhotonNetwork.player.casa + Dice.Value("") == 10)) {
+
+			PhotonNetwork.player.sequenciaBoss = PhotonNetwork.player.casa + Dice.Value ("");
+			TurnosGerenciador.photonViewRpc.RPC ("andarBoss",PhotonTargets.All,10,PhotonNetwork.player.NickName);
+
+		}
+
+
+		//se for passar ou cair encima do boss 20 TIGER
+		if ((PhotonNetwork.player.casa < 20 && PhotonNetwork.player.casa + Dice.Value ("") > 20) ||
+			(PhotonNetwork.player.casa + Dice.Value("") == 20)) {
+
+			PhotonNetwork.player.sequenciaBoss = PhotonNetwork.player.casa + Dice.Value ("");
+			TurnosGerenciador.photonViewRpc.RPC ("andarBoss",PhotonTargets.All,20,PhotonNetwork.player.NickName);
+		}
+
+
+		//se for passar ou cair encima do boss 30 GORILLA
+		if ((PhotonNetwork.player.casa < 30 && PhotonNetwork.player.casa + Dice.Value ("") > 30) ||
+			(PhotonNetwork.player.casa + Dice.Value("") == 30)) {
+
+			PhotonNetwork.player.sequenciaBoss = PhotonNetwork.player.casa + Dice.Value ("");
+			TurnosGerenciador.photonViewRpc.RPC ("andarBoss",PhotonTargets.All,30,PhotonNetwork.player.NickName);
+		}
+
+
+		//se nao passar pelo boss nem parar no boss ande normal
+		if (!(PhotonNetwork.player.casa < 10 && PhotonNetwork.player.casa + Dice.Value ("") > 10)&&
+			!(PhotonNetwork.player.casa + Dice.Value("") == 10) &&
+			!(PhotonNetwork.player.casa < 20 && PhotonNetwork.player.casa + Dice.Value ("") > 20) &&
+			!(PhotonNetwork.player.casa + Dice.Value("") == 20) &&
+			!(PhotonNetwork.player.casa < 30 && PhotonNetwork.player.casa + Dice.Value ("") > 30) &&
+			!(PhotonNetwork.player.casa + Dice.Value("") == 30)) {
+
+			TurnosGerenciador.photonViewRpc.RPC ("andar",PhotonTargets.All,Dice.Value("")+PhotonNetwork.player.casa,PhotonNetwork.player.NickName);
+		}
+
+
+
 	}
 
 

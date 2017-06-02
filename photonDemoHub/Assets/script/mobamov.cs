@@ -40,7 +40,74 @@ public class mobamov : MonoBehaviour {
 			} else {
 				anim.SetBool ("Walk", false);
 				if (PhotonNetwork.player.ande) {
-					TurnosGerenciador.photonViewRpc.RPC ("mostrarTexto", PhotonTargets.All, GerenteTextos.textosCasas [PhotonNetwork.player.casa]);
+					if (PhotonNetwork.player.casa == 10 || PhotonNetwork.player.casa == 20 || PhotonNetwork.player.casa == 30) {
+						int p = Random.Range(0, 4);
+						switch (PhotonNetwork.player.casa){
+						case 10://SPIDER
+							TurnosGerenciador.photonViewRpc.RPC ("mostrarTextoBoss", PhotonTargets.All,
+								PhotonNetwork.player.NickName,
+								10,
+								Boss.chefes [0].perguntas [p].txtPergunta,
+								Boss.chefes [0].perguntas [p].respostas [0].txtResp,
+								Boss.chefes [0].perguntas [p].respostas [1].txtResp,
+								Boss.chefes [0].perguntas [p].respostas [2].txtResp,
+								Boss.chefes [0].perguntas [p].respostas [3].txtResp);
+
+							//passa respostas para manipulação dos botoes
+							Boss.A = Boss.chefes [0].perguntas [p].respostas [0].resp;
+							Boss.B = Boss.chefes [0].perguntas [p].respostas [1].resp;
+							Boss.C = Boss.chefes [0].perguntas [p].respostas [2].resp;
+							Boss.D = Boss.chefes [0].perguntas [p].respostas [3].resp;
+
+							//passa quantas casas tera de voltar casso errar
+							Boss.voltar = Boss.chefes[0].penalidade;
+
+							break;
+
+						case 20://TIGER
+							TurnosGerenciador.photonViewRpc.RPC ("mostrarTextoBoss", PhotonTargets.All,
+								PhotonNetwork.player.NickName,
+								20,
+								Boss.chefes [1].perguntas [p].txtPergunta,
+								Boss.chefes [1].perguntas [p].respostas [0].txtResp,
+								Boss.chefes [1].perguntas [p].respostas [1].txtResp,
+								Boss.chefes [1].perguntas [p].respostas [2].txtResp,
+								Boss.chefes [1].perguntas [p].respostas [3].txtResp);
+
+							//passa respostas para manipulação dos botoes
+							Boss.A = Boss.chefes [1].perguntas [p].respostas [0].resp;
+							Boss.B = Boss.chefes [1].perguntas [p].respostas [1].resp;
+							Boss.C = Boss.chefes [1].perguntas [p].respostas [2].resp;
+							Boss.D = Boss.chefes [1].perguntas [p].respostas [3].resp;
+
+							//passa quantas casas tera de voltar casso errar
+							Boss.voltar = Boss.chefes[1].penalidade;
+							break;
+
+						case 30://GORILLA
+							TurnosGerenciador.photonViewRpc.RPC ("mostrarTextoBoss", PhotonTargets.All,
+								PhotonNetwork.player.NickName,
+								30,
+								Boss.chefes [2].perguntas [p].txtPergunta,
+								Boss.chefes [2].perguntas [p].respostas [0].txtResp,
+								Boss.chefes [2].perguntas [p].respostas [1].txtResp,
+								Boss.chefes [2].perguntas [p].respostas [2].txtResp,
+								Boss.chefes [2].perguntas [p].respostas [3].txtResp);
+							
+							//passa respostas para manipulação dos botoes
+							Boss.A = Boss.chefes [2].perguntas [p].respostas [0].resp;
+							Boss.B = Boss.chefes [2].perguntas [p].respostas [1].resp;
+							Boss.C = Boss.chefes [2].perguntas [p].respostas [2].resp;
+							Boss.D = Boss.chefes [2].perguntas [p].respostas [3].resp;
+
+							//passa quantas casas tera de voltar casso errar
+							Boss.voltar = Boss.chefes[2].penalidade;
+							break;
+
+						}
+					} else {
+						TurnosGerenciador.photonViewRpc.RPC ("mostrarTexto", PhotonTargets.All, GerenteTextos.textosCasas [PhotonNetwork.player.casa]);
+					}
 					PhotonNetwork.player.ande = false;
 				}
 			}	
@@ -57,13 +124,81 @@ public class mobamov : MonoBehaviour {
 			} else {
 				anim.SetBool ("Walk", false);
 				if (PhotonNetwork.player.andeEvento) {
-					//TurnosGerenciador.photonViewRpc.RPC ("mostrarTexto", PhotonTargets.All, GerenteTextos.textosCasas [PhotonNetwork.player.casa]);
+					if (PhotonNetwork.player.casa == 10 || PhotonNetwork.player.casa == 20 || PhotonNetwork.player.casa == 30) {
+						int p = Random.Range(0, 4);
+						switch (PhotonNetwork.player.casa){
+						case 10://SPIDER
+							TurnosGerenciador.photonViewRpc.RPC ("mostrarTextoBoss", PhotonTargets.All,
+								PhotonNetwork.player.NickName,
+								10,
+								Boss.chefes [0].perguntas [p].txtPergunta,
+								Boss.chefes [0].perguntas [p].respostas [0].txtResp,
+								Boss.chefes [0].perguntas [p].respostas [1].txtResp,
+								Boss.chefes [0].perguntas [p].respostas [2].txtResp,
+								Boss.chefes [0].perguntas [p].respostas [3].txtResp);
+
+							//passa respostas para manipulação dos botoes
+							Boss.A = Boss.chefes [0].perguntas [p].respostas [0].resp;
+							Boss.B = Boss.chefes [0].perguntas [p].respostas [1].resp;
+							Boss.C = Boss.chefes [0].perguntas [p].respostas [2].resp;
+							Boss.D = Boss.chefes [0].perguntas [p].respostas [3].resp;
+
+							//passa quantas casas tera de voltar casso errar
+							Boss.voltar = Boss.chefes[0].penalidade;
+
+							break;
+
+						case 20://TIGER
+							TurnosGerenciador.photonViewRpc.RPC ("mostrarTextoBoss", PhotonTargets.All,
+								PhotonNetwork.player.NickName,
+								20,
+								Boss.chefes [1].perguntas [p].txtPergunta,
+								Boss.chefes [1].perguntas [p].respostas [0].txtResp,
+								Boss.chefes [1].perguntas [p].respostas [1].txtResp,
+								Boss.chefes [1].perguntas [p].respostas [2].txtResp,
+								Boss.chefes [1].perguntas [p].respostas [3].txtResp);
+
+							//passa respostas para manipulação dos botoes
+							Boss.A = Boss.chefes [1].perguntas [p].respostas [0].resp;
+							Boss.B = Boss.chefes [1].perguntas [p].respostas [1].resp;
+							Boss.C = Boss.chefes [1].perguntas [p].respostas [2].resp;
+							Boss.D = Boss.chefes [1].perguntas [p].respostas [3].resp;
+
+							//passa quantas casas tera de voltar casso errar
+							Boss.voltar = Boss.chefes[1].penalidade;
+							break;
+
+						case 30://GORILLA
+							TurnosGerenciador.photonViewRpc.RPC ("mostrarTextoBoss", PhotonTargets.All,
+								PhotonNetwork.player.NickName,
+								30,
+								Boss.chefes [2].perguntas [p].txtPergunta,
+								Boss.chefes [2].perguntas [p].respostas [0].txtResp,
+								Boss.chefes [2].perguntas [p].respostas [1].txtResp,
+								Boss.chefes [2].perguntas [p].respostas [2].txtResp,
+								Boss.chefes [2].perguntas [p].respostas [3].txtResp);
+
+							//passa respostas para manipulação dos botoes
+							Boss.A = Boss.chefes [2].perguntas [p].respostas [0].resp;
+							Boss.B = Boss.chefes [2].perguntas [p].respostas [1].resp;
+							Boss.C = Boss.chefes [2].perguntas [p].respostas [2].resp;
+							Boss.D = Boss.chefes [2].perguntas [p].respostas [3].resp;
+
+							//passa quantas casas tera de voltar casso errar
+							Boss.voltar = Boss.chefes[2].penalidade;
+							break;
+
+						}
+					}
 					PhotonNetwork.player.andeEvento = false;
 				}
 			}	
+
 		}
 
+
 	}
+
 
 	void CarregaEnderecos(){
 		tmp.Set (96.643f,0f,51.754f);//0

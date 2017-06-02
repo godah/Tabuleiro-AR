@@ -95,3 +95,4 @@ C:\Users\Public\Documents\Unity Projects\photonDemoHub\Temp\bin\Debug\Photon3Uni
 C:\Users\Public\Documents\Unity Projects\photonDemoHub\Temp\bin\Debug\Vuforia.UnityExtensions.xml
 C:\Users\Public\Documents\Unity Projects\photonDemoHub\obj\Debug\Assembly-CSharp-firstpass.dll
 C:\Users\Public\Documents\Unity Projects\photonDemoHub\obj\Debug\Assembly-CSharp-firstpass.pdb
+C:\Users\Public\Documents\Unity Projects\photonDemoHub\obj\Debug\Assembly-CSharp-firstpass.csprojResolveAssemblyReference.cache
