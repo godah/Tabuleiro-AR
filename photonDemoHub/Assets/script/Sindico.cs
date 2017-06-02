@@ -23,13 +23,14 @@ public class Sindico : MonoBehaviour{
 	public GameObject canvasModel;
 	public GameObject canvasHUD;
 	public GameObject canvasJogadaDaVez;
+	public GameObject canvasTexto;
 	public GameObject ModelMask1;
 	public GameObject ModelMask2;
 	public GameObject ModelMask3;
 	public GameObject ModelMask4;
 	public GameObject btnReady;
 	public GameObject btnUnready;
-	public GameObject btnPassarTurno;
+	public GameObject btnJogar;
 	public Transform spawn;
 	public GameObject canvasReady;
 	int numeroAtualDeSalas;
@@ -54,6 +55,7 @@ public class Sindico : MonoBehaviour{
 		
 		//exibe na tela
 		message.text = PhotonNetwork.playerList.Length.ToString ();
+		Debug.Log (PhotonNetwork.player.NickName+" isTurn:"+PhotonNetwork.player.isTurn +" ID:"+PhotonNetwork.player.ID);
 
 		//verifica se esta conectado no photon
 		if (PhotonNetwork.connected) {
@@ -65,23 +67,36 @@ public class Sindico : MonoBehaviour{
 			btnConnectar.text = "Conectar";
 		}
 
-
+		Debug.Log ("start "+ PhotonNetwork.player.start);
 
 		if (PhotonNetwork.playerList.Length > 0 && PhotonNetwork.player.start ) {
+			Debug.Log ("Entrou if len > 0 && start");
 			canvasReady.SetActive (false);
 			btnReady.SetActive (false);
 			btnUnready.SetActive (false);
 
-			for (int i = 0; i < PhotonNetwork.playerList.Length ; i++) {
-				if (PhotonNetwork.playerList [i].NickName.Equals (nick)) {
-					message.text = "Start "+PhotonNetwork.playerList[i].start.ToString();
-					if (PhotonNetwork.playerList [i].isTurn) {
-						canvasJogadaDaVez.SetActive (true);
-					} else {
-						canvasJogadaDaVez.SetActive (false);
-					}
-				}
+			if (PhotonNetwork.player.isTurn && !PhotonNetwork.player.emjogo) {
+				canvasJogadaDaVez.SetActive (true);
+				btnJogar.SetActive (true);
+				canvasTexto.SetActive (false);
+
+			} else {
+				canvasJogadaDaVez.SetActive (false);
+				btnJogar.SetActive (false);
 			}
+
+//			for (int i = 0; i < PhotonNetwork.playerList.Length ; i++) {
+//				Debug.Log ("Entrou for");
+//				if (PhotonNetwork.playerList [i].NickName.Equals (nick)) {
+//					Debug.Log ("encontrou meu proprio nick");
+//					message.text = "Start "+PhotonNetwork.playerList[i].start.ToString();
+//					if (PhotonNetwork.playerList [i].isTurn) {
+//						canvasJogadaDaVez.SetActive (true);
+//					} else {
+//						canvasJogadaDaVez.SetActive (false);
+//					}
+//				}
+//			}
 		}
 	}
 
@@ -259,6 +274,7 @@ public class Sindico : MonoBehaviour{
 		PhotonNetwork.player.model = model + "(Clone)";
 		PhotonNetwork.player.ande = false;
 		PhotonNetwork.player.andeEvento = false;
+		PhotonNetwork.player.emjogo = false;
 
 	}
 
@@ -267,7 +283,7 @@ public class Sindico : MonoBehaviour{
 
 	public void botaoExit(){
 		canvasJogadaDaVez.SetActive (false); 
-		btnPassarTurno.SetActive (false);
+		btnJogar.SetActive (false);
 		canvasReady.SetActive (false);
 		btnReady.SetActive (false);
 		btnUnready.SetActive (false);

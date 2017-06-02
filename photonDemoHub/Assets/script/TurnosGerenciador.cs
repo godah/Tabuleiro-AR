@@ -12,6 +12,17 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 	public GameObject DadoStatus;
 	public GameObject canvasTexto;
 	public Text textoLabel;
+	//boss
+	public GameObject canvasBoss;
+	public Text txtResp1;
+	public Text txtResp2;
+	public Text txtResp3;
+	public Text txtResp4;
+	public Text txtBoss;
+	public GameObject Gorilla;
+	public GameObject Tiger;
+	public GameObject Spider;
+	public GameObject PanelAjuda;
 
 
 	void Start () {
@@ -72,17 +83,37 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 	[PunRPC]
 	public void passarVez(string nick){
 		Debug.Log ("passarVez");
-		for (int i = 0; i < PhotonNetwork.playerList.Length ; i++) {
+		canvasTexto.SetActive (false);
+		//encontra jogador atual e seta isTurn = false.
+		int id = 0;
+		for (int i = 0; i < PhotonNetwork.playerList.Length; i++) {
 			if (PhotonNetwork.playerList [i].NickName == nick) {
-				//se for o ultimo da lista
-				if (i == PhotonNetwork.playerList.Length - 1) {
-					PhotonNetwork.playerList [i].isTurn = false;
-					PhotonNetwork.playerList [0].isTurn = true;
-				} else {
-					PhotonNetwork.playerList [i].isTurn = false;
-					PhotonNetwork.playerList [i + 1].isTurn = true;
+				Debug.Log ("isTurn = false");
+				PhotonNetwork.playerList [i].emjogo = false;
+				PhotonNetwork.playerList [i].isTurn = false;
+				id = PhotonNetwork.playerList [i].ID;
+			}
+		}
+
+		//procura jogador com proximo id e passa o Turno
+		bool ultimo = true;
+		for (int i = 0; i < PhotonNetwork.playerList.Length; i++) {
+			if (id > 0 && PhotonNetwork.playerList [i].ID > id) {
+				Debug.Log ("encontrou proximo");
+				PhotonNetwork.playerList [i].isTurn = true;
+				ultimo = false; //caso encontre
+			}
+		}
+
+		//caso nao houver jogador com id maior pasas o turno para o primeiro
+		if (ultimo) {
+			int menor = 0;
+			for (int i = 1; i < PhotonNetwork.playerList.Length; i++) {
+				if (PhotonNetwork.playerList [i].ID < PhotonNetwork.playerList[menor].ID) {
+					menor = i;
 				}
 			}
+			PhotonNetwork.playerList [menor].isTurn = true;
 		}
 	}
 
@@ -118,7 +149,7 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 
 	[PunRPC]
 	public void removerDado(){
-		Debug.Log ("removerDado");
+		//Debug.Log ("removerDado");
 		GameObject dado = GameObject.Find ("d6(Clone)");
 		Destroy (dado);
 		DadoStatus.SetActive (false);
@@ -144,19 +175,29 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 	}
 
 	[PunRPC]
-	public void andarEvento(int lado, string nick){
+	public void andarEvento(int casa, string nick){
 		Debug.Log ("andarEvento");
 		for(int i = 0; i < PhotonNetwork.playerList.Length; i++){
 			if (PhotonNetwork.playerList [i].NickName == nick) {
-				if (PhotonNetwork.playerList [i].casa + lado > 30) {
-					PhotonNetwork.playerList [i].casa = 30;
-				} else {
-					PhotonNetwork.playerList [i].casa = PhotonNetwork.playerList [i].casa + lado;
-				}
+				
+				PhotonNetwork.playerList [i].casa = casa;
 				PhotonNetwork.playerList [i].andeEvento = true;
 			}
 		}
 	}
+
+	[PunRPC]
+	public void andarBoss(int casa, string nick){
+		Debug.Log ("andarBoss");
+		for(int i = 0; i < PhotonNetwork.playerList.Length; i++){
+			if (PhotonNetwork.playerList [i].NickName == nick) {
+				
+				PhotonNetwork.playerList [i].casa = casa;
+				PhotonNetwork.playerList [i].ande = true;
+			}
+		}
+	}
+
 
 
 
@@ -165,6 +206,39 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 		canvasTexto.SetActive (true);
 		textoLabel.text = texto.ToString ();
 	}
+
+	[PunRPC]
+	public void mostrarTextoBoss(string nick, int boss, string pergunta, string Resp1, string Resp2,
+		string Resp3, string Resp4){
+
+		//ativa canvasBoss
+		canvasBoss.SetActive (true);
+		//mostra opções para quem esta jogando.
+		if (nick == PhotonNetwork.player.NickName) {
+			//Carrega questão e respostas
+			txtBoss.text = pergunta.ToString ();
+			txtResp1.text = Resp1.ToString ();
+			txtResp2.text = Resp2.ToString ();
+			txtResp3.text = Resp3.ToString ();
+			txtResp4.text = Resp4.ToString ();
+		}
+
+		//ativa foto do boss
+		switch (boss) {
+		case 10:
+			Spider.SetActive (true);
+			break;
+		case 20:
+			Tiger.SetActive (true);
+			break;
+		case 30:
+			Gorilla.SetActive (true);
+			break;
+		}
+
+
+	}
+
 
 
 }

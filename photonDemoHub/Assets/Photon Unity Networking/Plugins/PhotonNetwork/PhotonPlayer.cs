@@ -39,6 +39,12 @@ public class PhotonPlayer : IComparable<PhotonPlayer>, IComparable<int>, IEquata
 	/// <summary>Descreve se é a vez de andar</summary>
 	public bool ande { get; set; }
 
+	/// <summary>Casa que deve ir ao vencer o Boss</summary>
+	public int sequenciaBoss { get; set; }
+
+	/// <summary>Descreve se esta em jogo</summary>
+	public bool emjogo { get; set; }
+
 	/// <summary>Descreve se é a vez de andarEvento</summary>
 	public bool andeEvento { get; set; }
 
@@ -453,3 +459,5 @@ public class PhotonPlayer : IComparable<PhotonPlayer>, IComparable<int>, IEquata
 
     #endregion
 }
+
+
