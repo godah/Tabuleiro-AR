@@ -23,6 +23,11 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 	public GameObject Tiger;
 	public GameObject Spider;
 	public GameObject PanelAjuda;
+	public GameObject PanelBtn;
+	public GameObject acertou;
+	public GameObject errou;
+	public GameObject canvasFinal;
+	public Text txtFinal;
 
 
 	void Start () {
@@ -82,13 +87,14 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 
 	[PunRPC]
 	public void passarVez(string nick){
-		Debug.Log ("passarVez");
+		//Debug.Log ("passarVez");
 		canvasTexto.SetActive (false);
 		//encontra jogador atual e seta isTurn = false.
 		int id = 0;
 		for (int i = 0; i < PhotonNetwork.playerList.Length; i++) {
 			if (PhotonNetwork.playerList [i].NickName == nick) {
-				Debug.Log ("isTurn = false");
+				//Debug.Log ("isTurn = false");
+				PhotonNetwork.playerList [i].inBossFight = false;
 				PhotonNetwork.playerList [i].emjogo = false;
 				PhotonNetwork.playerList [i].isTurn = false;
 				id = PhotonNetwork.playerList [i].ID;
@@ -99,7 +105,7 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 		bool ultimo = true;
 		for (int i = 0; i < PhotonNetwork.playerList.Length; i++) {
 			if (id > 0 && PhotonNetwork.playerList [i].ID > id) {
-				Debug.Log ("encontrou proximo");
+				//Debug.Log ("encontrou proximo");
 				PhotonNetwork.playerList [i].isTurn = true;
 				ultimo = false; //caso encontre
 			}
@@ -157,18 +163,29 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 		
 	}
 
+//	[PunRPC]
+//	public void andar(int lado, string nick){
+//		Debug.Log ("andar");
+//		DadoStatus.SetActive (true);
+//		txtlado.text = lado.ToString();	
+//		for(int i = 0; i < PhotonNetwork.playerList.Length; i++){
+//			if (PhotonNetwork.playerList [i].NickName == nick) {
+//				if (PhotonNetwork.playerList [i].casa + lado > 30) {
+//					PhotonNetwork.playerList [i].casa = 30;
+//				} else {
+//					PhotonNetwork.playerList [i].casa = PhotonNetwork.playerList [i].casa + lado;
+//				}
+//				PhotonNetwork.playerList [i].ande = true;
+//			}
+//		}
+//	}
+
 	[PunRPC]
-	public void andar(int lado, string nick){
+	public void andar(int casa, string nick){
 		Debug.Log ("andar");
-		DadoStatus.SetActive (true);
-		txtlado.text = lado.ToString();	
 		for(int i = 0; i < PhotonNetwork.playerList.Length; i++){
 			if (PhotonNetwork.playerList [i].NickName == nick) {
-				if (PhotonNetwork.playerList [i].casa + lado > 30) {
-					PhotonNetwork.playerList [i].casa = 30;
-				} else {
-					PhotonNetwork.playerList [i].casa = PhotonNetwork.playerList [i].casa + lado;
-				}
+				PhotonNetwork.playerList [i].casa = casa;
 				PhotonNetwork.playerList [i].ande = true;
 			}
 		}
@@ -191,9 +208,39 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 		Debug.Log ("andarBoss");
 		for(int i = 0; i < PhotonNetwork.playerList.Length; i++){
 			if (PhotonNetwork.playerList [i].NickName == nick) {
-				
+				PhotonNetwork.playerList [i].inBossFight = true;
 				PhotonNetwork.playerList [i].casa = casa;
 				PhotonNetwork.playerList [i].ande = true;
+			}
+		}
+	}
+
+	[PunRPC]
+	public void adicionaEstrela(string nick){
+		Debug.Log ("adicionaEstrela");
+		for(int i = 0; i < PhotonNetwork.playerList.Length; i++){
+			if (PhotonNetwork.playerList [i].NickName == nick) {
+				PhotonNetwork.playerList [i].estrelas++;
+			}
+		}
+	}
+
+	[PunRPC]
+	public void removeEstrela(string nick){
+		Debug.Log ("removeEstrela");
+		for(int i = 0; i < PhotonNetwork.playerList.Length; i++){
+			if (PhotonNetwork.playerList [i].NickName == nick) {
+				PhotonNetwork.playerList [i].estrelas--;
+			}
+		}
+	}
+
+	[PunRPC]
+	public void removeTodasEstrelas(string nick){
+		Debug.Log ("removeTodasEstrela");
+		for(int i = 0; i < PhotonNetwork.playerList.Length; i++){
+			if (PhotonNetwork.playerList [i].NickName == nick) {
+				PhotonNetwork.playerList [i].estrelas = 0;
 			}
 		}
 	}
@@ -213,16 +260,20 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 
 		//ativa canvasBoss
 		canvasBoss.SetActive (true);
+
+		//Carrega questão e respostas
+		txtBoss.text = pergunta.ToString ();
+		txtResp1.text = Resp1.ToString ();
+		txtResp2.text = Resp2.ToString ();
+		txtResp3.text = Resp3.ToString ();
+		txtResp4.text = Resp4.ToString ();
+
+
 		//mostra opções para quem esta jogando.
 		if (nick == PhotonNetwork.player.NickName) {
-			//Carrega questão e respostas
-			txtBoss.text = pergunta.ToString ();
-			txtResp1.text = Resp1.ToString ();
-			txtResp2.text = Resp2.ToString ();
-			txtResp3.text = Resp3.ToString ();
-			txtResp4.text = Resp4.ToString ();
+			PanelBtn.SetActive (true);
 		}
-
+		Debug.Log ("RPC boss para foto "+ boss.ToString());
 		//ativa foto do boss
 		switch (boss) {
 		case 10:
@@ -237,6 +288,52 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 		}
 
 
+	}
+
+	[PunRPC]
+	public void respostaCorreta(string txt){
+		acertou.SetActive (true);
+		txtBoss.text = txt.ToString ();
+	}
+
+	[PunRPC]
+	public void respostaErrada(string txt){
+		errou.SetActive (true);
+		txtBoss.text = txt.ToString ();
+	}
+
+	[PunRPC]
+	public void bossClearScreen(){
+		//desabilita imagem de resposta correta ou errada
+		acertou.SetActive (false);
+		errou.SetActive (false);
+		//desabilita paineis
+		PanelAjuda.SetActive (false);
+		PanelBtn.SetActive (false);
+		//desabilita todas as fotos por padrao
+		Spider.SetActive (false);
+		Tiger.SetActive (false);
+		Gorilla.SetActive (false);
+		//desabilita canvas boss
+		canvasBoss.SetActive (false);
+		//Remove Dado
+		Dice.Clear ();
+		this.photonView.RPC("removerDado", PhotonTargets.All);
+	}
+
+	[PunRPC]
+	public void final(string nick){
+		for(int i = 0; i < PhotonNetwork.playerList.Length; i++){
+			if (PhotonNetwork.playerList [i].NickName == nick) {
+				canvasFinal.SetActive (true);
+				txtFinal.text = ("Parabéns " + nick + " você venceu!!! ").ToString();
+			}
+		}
+	}
+
+	[PunRPC]
+	public void videoFinal(string model){
+		//chamar video pelo nome do model
 	}
 
 

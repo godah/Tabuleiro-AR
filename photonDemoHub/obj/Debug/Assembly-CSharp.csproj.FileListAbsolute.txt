@@ -64,6 +64,5 @@ C:\Users\Public\Documents\Unity Projects\photonDemoHub\Temp\bin\Debug\UnityEngin
 C:\Users\Public\Documents\Unity Projects\photonDemoHub\Temp\bin\Debug\UnityEngine.VR.xml
 C:\Users\Public\Documents\Unity Projects\photonDemoHub\Temp\bin\Debug\Photon3Unity3D.xml
 C:\Users\Public\Documents\Unity Projects\photonDemoHub\Temp\bin\Debug\Vuforia.UnityExtensions.xml
-C:\Users\Public\Documents\Unity Projects\photonDemoHub\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 C:\Users\Public\Documents\Unity Projects\photonDemoHub\obj\Debug\Assembly-CSharp.dll
 C:\Users\Public\Documents\Unity Projects\photonDemoHub\obj\Debug\Assembly-CSharp.pdb

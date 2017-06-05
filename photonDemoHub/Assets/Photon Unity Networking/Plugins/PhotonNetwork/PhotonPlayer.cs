@@ -42,6 +42,9 @@ public class PhotonPlayer : IComparable<PhotonPlayer>, IComparable<int>, IEquata
 	/// <summary>Casa que deve ir ao vencer o Boss</summary>
 	public int sequenciaBoss { get; set; }
 
+	/// <summary>Mostra se esta no boss fight</summary>
+	public bool inBossFight { get; set; }
+
 	/// <summary>Descreve se esta em jogo</summary>
 	public bool emjogo { get; set; }
 
