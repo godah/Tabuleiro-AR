@@ -55,7 +55,7 @@ public class Sindico : MonoBehaviour{
 		
 		//exibe na tela
 		message.text = PhotonNetwork.playerList.Length.ToString ();
-		Debug.Log (PhotonNetwork.player.NickName+" isTurn:"+PhotonNetwork.player.isTurn +" ID:"+PhotonNetwork.player.ID);
+		//Debug.Log (PhotonNetwork.player.NickName+" isTurn:"+PhotonNetwork.player.isTurn +" ID:"+PhotonNetwork.player.ID);
 
 		//verifica se esta conectado no photon
 		if (PhotonNetwork.connected) {
@@ -67,10 +67,10 @@ public class Sindico : MonoBehaviour{
 			btnConnectar.text = "Conectar";
 		}
 
-		Debug.Log ("start "+ PhotonNetwork.player.start);
+		//Debug.Log ("start "+ PhotonNetwork.player.start);
 
 		if (PhotonNetwork.playerList.Length > 0 && PhotonNetwork.player.start ) {
-			Debug.Log ("Entrou if len > 0 && start");
+			//Debug.Log ("Entrou if len > 0 && start");
 			canvasReady.SetActive (false);
 			btnReady.SetActive (false);
 			btnUnready.SetActive (false);

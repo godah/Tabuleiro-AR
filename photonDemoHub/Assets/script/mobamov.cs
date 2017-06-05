@@ -201,7 +201,7 @@ public class mobamov : MonoBehaviour {
 
 
 	void CarregaEnderecos(){
-		tmp.Set (96.643f,0f,51.754f);//0
+		tmp.Set (97.281f,0f,53.121f);//0
 		enderecoCasas.Add (tmp);
 		tmp.Set (91.6f,0f,47.5f);//1
 		enderecoCasas.Add (tmp);
@@ -262,6 +262,8 @@ public class mobamov : MonoBehaviour {
 		tmp.Set (16.6f,0f,43f);//29
 		enderecoCasas.Add (tmp);
 		tmp.Set (16.6f,0f,45.9f);//30 boss Gorilla Final
+		enderecoCasas.Add (tmp);
+		tmp.Set (10.91f,0f,51.2f);//31 FIM
 		enderecoCasas.Add (tmp);
 	}
 
