@@ -32,7 +32,7 @@ public class DadoManager : MonoBehaviour {
 		Dice.Roll("d6", "d6-red-dots", diceSpawn.transform.position, Force());
 		btnJogar.SetActive (false);
 		PhotonNetwork.player.emjogo = true;
-		StartCoroutine (waitRolling (4));
+		StartCoroutine (waitRolling (5));
 
 	}
 
@@ -108,7 +108,8 @@ public class DadoManager : MonoBehaviour {
 
 				//TurnosGerenciador.photonViewRpc.RPC ("andar",PhotonTargets.All,Dice.Value("")+PhotonNetwork.player.casa,PhotonNetwork.player.NickName);
 				TurnosGerenciador.photonViewRpc.RPC ("andarEvento", PhotonTargets.All, PhotonNetwork.player.casa + GerenteEventos.eventosCasas [PhotonNetwork.player.casa], PhotonNetwork.player.NickName);
-				TurnosGerenciador.photonViewRpc.RPC ("passarVez", PhotonTargets.All, PhotonNetwork.player.NickName);
+				//TurnosGerenciador.photonViewRpc.RPC ("passarVez", PhotonTargets.All, PhotonNetwork.player.NickName);
+				Sindico.passarVez();
 			}
 
 			//TurnosGerenciador.photonViewRpc.RPC ("andarEvento", PhotonTargets.All, PhotonNetwork.player.casa, PhotonNetwork.player.NickName);

@@ -43,16 +43,16 @@ public class Boss : MonoBehaviour {
 		chefes [0].perguntas [0].txtPergunta = "Frações! Uma Barra de chocolate possui 4 camadas , pedro comeu 2 dessas camadas , qual a medida fracionária que corresponde a parte do chocolate que pedro comeu?";
 
 		//adiciona respostas a lista de respostas
-		chefes [0].perguntas [0].respostas [0].txtResp = "⅓";
+		chefes [0].perguntas [0].respostas [0].txtResp = "1/3";
 		chefes [0].perguntas [0].respostas [0].resp = false;
 
-		chefes [0].perguntas [0].respostas [1].txtResp = "½";
+		chefes [0].perguntas [0].respostas [1].txtResp = "1/2";
 		chefes [0].perguntas [0].respostas [1].resp = true;
 
-		chefes [0].perguntas [0].respostas [2].txtResp = "¼";
+		chefes [0].perguntas [0].respostas [2].txtResp = "1/4";
 		chefes [0].perguntas [0].respostas [2].resp = false;
 
-		chefes [0].perguntas [0].respostas [3].txtResp = "⅗";
+		chefes [0].perguntas [0].respostas [3].txtResp = "1/5";
 		chefes [0].perguntas [0].respostas [3].resp = false;
 
 
@@ -172,7 +172,7 @@ public class Boss : MonoBehaviour {
 		chefes [1].perguntas [2].txtPergunta = "Se chegou até aqui voce já sabe um poco sobre os continentes e sabe também que o clima e diferente entre eles , sendo assim o continente mais frio do mundo é o(a): ";
 
 		//adiciona respostas a lista de respostas
-		chefes [1].perguntas [2].respostas [0].txtResp = "Antardida";
+		chefes [1].perguntas [2].respostas [0].txtResp = "Antártida";
 		chefes [1].perguntas [2].respostas [0].resp = true;
 
 		chefes [1].perguntas [2].respostas [1].txtResp = "Europeu";
@@ -421,7 +421,8 @@ public class Boss : MonoBehaviour {
 			TurnosGerenciador.photonViewRpc.RPC ("final", PhotonTargets.All, PhotonNetwork.player.NickName);	
 			StartCoroutine (videoFinal (3));
 		} else {
-			TurnosGerenciador.photonViewRpc.RPC ("passarVez", PhotonTargets.All, PhotonNetwork.player.NickName);
+			//TurnosGerenciador.photonViewRpc.RPC ("passarVez", PhotonTargets.All, PhotonNetwork.player.NickName);
+			Sindico.passarVez();
 		}
 	}
 

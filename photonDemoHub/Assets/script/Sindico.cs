@@ -70,11 +70,11 @@ public class Sindico : MonoBehaviour{
 		//Debug.Log ("start "+ PhotonNetwork.player.start);
 
 		if (PhotonNetwork.playerList.Length > 0 && PhotonNetwork.player.start ) {
-			//Debug.Log ("Entrou if len > 0 && start");
+			Debug.Log ("Entrou if len > 0 && start");
 			canvasReady.SetActive (false);
 			btnReady.SetActive (false);
 			btnUnready.SetActive (false);
-
+			Debug.Log (PhotonNetwork.player.NickName+" isturn "+PhotonNetwork.player.isTurn +" emjogo "+ !PhotonNetwork.player.emjogo);
 			if (PhotonNetwork.player.isTurn && !PhotonNetwork.player.emjogo) {
 				canvasJogadaDaVez.SetActive (true);
 				btnJogar.SetActive (true);
@@ -296,7 +296,9 @@ public class Sindico : MonoBehaviour{
 
 
 	public void botaoPassarTurno(){
-		TurnosGerenciador.photonViewRpc.RPC ("passarVez",PhotonTargets.All,nick);
+		passarVez ();
+		//TurnosGerenciador.photonViewRpc.RPC ("passarVez",PhotonTargets.All,nick);
+
 	}
 
 
@@ -348,4 +350,41 @@ public class Sindico : MonoBehaviour{
 
 	}
 
+
+	public static void passarVez(){
+		string proximo="";
+		//encontra jogador atual e seta isTurn = false.
+
+
+		PhotonNetwork.player.inBossFight = false;
+		PhotonNetwork.player.emjogo = false;
+		PhotonNetwork.player.isTurn = false;
+
+		//procura jogador com proximo id e passa o Turno
+		bool ultimo = true;
+		for (int i = 0; i < PhotonNetwork.playerList.Length; i++) {
+			//if (id > 0 && PhotonNetwork.playerList [i].ID > id) {
+			if (PhotonNetwork.playerList [i].ID > PhotonNetwork.player.ID) {
+				Debug.Log ("encontrou proximo");
+				proximo = PhotonNetwork.playerList [i].NickName;
+				ultimo = false; //caso encontre
+				i = PhotonNetwork.playerList.Length;
+			}
+		}
+
+		//caso nao houver jogador com id maior pasas o turno para o primeiro
+		if (ultimo) {
+			int menor = 0;
+			for (int i = 1; i < PhotonNetwork.playerList.Length; i++) {
+				if (PhotonNetwork.playerList [i].ID < PhotonNetwork.playerList[menor].ID) {
+					menor = i;
+				}
+			}
+			proximo = PhotonNetwork.playerList [menor].NickName;
+		}
+
+
+		TurnosGerenciador.photonViewRpc.RPC ("passarVez",PhotonTargets.All,proximo);
+
+	}
 }
