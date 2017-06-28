@@ -28,6 +28,11 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 	public GameObject errou;
 	public GameObject canvasFinal;
 	public Text txtFinal;
+	public AudioSource audioTiger;
+	public AudioSource audioSpider;
+	public AudioSource audioGorila;
+	public AudioSource audioAplause;
+
 
 
 	void Start () {
@@ -84,44 +89,61 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 		}
 	}
 
-
 	[PunRPC]
-	public void passarVez(string nick){
-		//Debug.Log ("passarVez");
+	public void passarVez(string proximo){
+		Debug.Log ("passarVez PunRPC");
 		canvasTexto.SetActive (false);
-		//encontra jogador atual e seta isTurn = false.
-		int id = 0;
 		for (int i = 0; i < PhotonNetwork.playerList.Length; i++) {
-			if (PhotonNetwork.playerList [i].NickName == nick) {
-				//Debug.Log ("isTurn = false");
-				PhotonNetwork.playerList [i].inBossFight = false;
-				PhotonNetwork.playerList [i].emjogo = false;
-				PhotonNetwork.playerList [i].isTurn = false;
-				id = PhotonNetwork.playerList [i].ID;
-			}
-		}
-
-		//procura jogador com proximo id e passa o Turno
-		bool ultimo = true;
-		for (int i = 0; i < PhotonNetwork.playerList.Length; i++) {
-			if (id > 0 && PhotonNetwork.playerList [i].ID > id) {
-				//Debug.Log ("encontrou proximo");
+			if(PhotonNetwork.playerList[i].NickName == proximo){
 				PhotonNetwork.playerList [i].isTurn = true;
-				ultimo = false; //caso encontre
+				PhotonNetwork.playerList [i].emjogo = false;
+				PhotonNetwork.playerList [i].inBossFight = false;
+				i = PhotonNetwork.playerList.Length;
 			}
 		}
 
-		//caso nao houver jogador com id maior pasas o turno para o primeiro
-		if (ultimo) {
-			int menor = 0;
-			for (int i = 1; i < PhotonNetwork.playerList.Length; i++) {
-				if (PhotonNetwork.playerList [i].ID < PhotonNetwork.playerList[menor].ID) {
-					menor = i;
-				}
-			}
-			PhotonNetwork.playerList [menor].isTurn = true;
-		}
 	}
+
+
+//	[PunRPC]
+//	public static void passarVez(string nick){
+//		//Debug.Log ("passarVez");
+//		canvasTexto.SetActive (false);
+//		//encontra jogador atual e seta isTurn = false.
+//		int id = 0;
+//		for (int i = 0; i < PhotonNetwork.playerList.Length; i++) {
+//			if (PhotonNetwork.playerList [i].NickName == nick) {
+//				//Debug.Log ("isTurn = false");
+//				PhotonNetwork.playerList [i].inBossFight = false;
+//				PhotonNetwork.playerList [i].emjogo = false;
+//				PhotonNetwork.playerList [i].isTurn = false;
+//				id = PhotonNetwork.playerList [i].ID;
+//			}
+//		}
+//
+//		//procura jogador com proximo id e passa o Turno
+//		bool ultimo = true;
+//		for (int i = 0; i < PhotonNetwork.playerList.Length; i++) {
+//			//if (id > 0 && PhotonNetwork.playerList [i].ID > id) {
+//			if (PhotonNetwork.playerList [i].ID > id) {
+//				//Debug.Log ("encontrou proximo");
+//				PhotonNetwork.playerList [i].isTurn = true;
+//				ultimo = false; //caso encontre
+//				i = PhotonNetwork.playerList.Length;
+//			}
+//		}
+//
+//		//caso nao houver jogador com id maior pasas o turno para o primeiro
+//		if (ultimo) {
+//			int menor = 0;
+//			for (int i = 1; i < PhotonNetwork.playerList.Length; i++) {
+//				if (PhotonNetwork.playerList [i].ID < PhotonNetwork.playerList[menor].ID) {
+//					menor = i;
+//				}
+//			}
+//			PhotonNetwork.playerList [menor].isTurn = true;
+//		}
+//	}
 
 
 
@@ -257,7 +279,8 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 	[PunRPC]
 	public void mostrarTextoBoss(string nick, int boss, string pergunta, string Resp1, string Resp2,
 		string Resp3, string Resp4){
-
+		//desativa canvasTexto dos textos comuns para nao sobrepor
+		canvasTexto.SetActive (false);
 		//ativa canvasBoss
 		canvasBoss.SetActive (true);
 
@@ -273,17 +296,21 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 		if (nick == PhotonNetwork.player.NickName) {
 			PanelBtn.SetActive (true);
 		}
+
 		Debug.Log ("RPC boss para foto "+ boss.ToString());
 		//ativa foto do boss
 		switch (boss) {
 		case 10:
 			Spider.SetActive (true);
+			audioSpider.Play ();
 			break;
 		case 20:
 			Tiger.SetActive (true);
+			audioTiger.Play ();
 			break;
 		case 30:
 			Gorilla.SetActive (true);
+			audioGorila.Play ();
 			break;
 		}
 
@@ -326,7 +353,8 @@ public class TurnosGerenciador : Photon.MonoBehaviour {
 		for(int i = 0; i < PhotonNetwork.playerList.Length; i++){
 			if (PhotonNetwork.playerList [i].NickName == nick) {
 				canvasFinal.SetActive (true);
-				txtFinal.text = ("Parabéns " + nick + " você venceu!!! ").ToString();
+				audioAplause.Play ();
+				txtFinal.text = ("Parabéns " + nick + " você venceu!!!").ToString();
 			}
 		}
 	}
